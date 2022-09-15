@@ -10,6 +10,7 @@ public class PlayerInputController : MonoBehaviour
     public bool jump;
     public bool swap;
     public Vector2 cameraTargetPitch;
+    public bool grenade;
 
     public void OnMove(InputValue value)
     {
@@ -49,6 +50,16 @@ public class PlayerInputController : MonoBehaviour
     public void LookInput(Vector2 newLookDirection)
     {
         look = newLookDirection;
+    }
+
+    public void OnGrenade(InputValue value)
+    {
+        GrenadeInput(value.isPressed);
+    }
+
+    public void GrenadeInput(bool newGrenadeState)
+    {
+        grenade = newGrenadeState;
     }
 
 }
