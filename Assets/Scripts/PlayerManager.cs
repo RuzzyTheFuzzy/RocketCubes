@@ -6,10 +6,28 @@ public class PlayerManager : MonoBehaviour
 {
 
     private PlayerInputController playerInputController;
+    [SerializeField] private float _maxFuel;
+    [SerializeField] private int maxGrenades;
+    [SerializeField] private int maxJumps;
     [SerializeField] private int numPlayers = 1;
     [SerializeField] private GameObject player;
-    private List<CharacterController> players = new List<CharacterController>();
+    private List<Player> players = new List<Player>();
     private int activePlayer;
+    public Player currentPlayer
+    {
+        get
+        {
+            return players[activePlayer];
+        }
+    }
+
+    public float maxFuel
+    {
+        get
+        {
+            return _maxFuel;
+        }
+    }
 
 
     private void Start()
@@ -24,15 +42,10 @@ public class PlayerManager : MonoBehaviour
 
             GameObject newPlayer = Instantiate(player, position, transform.rotation, transform);
             newPlayer.name = "Player " + (i + 1);
-            players.Add(newPlayer.GetComponent<CharacterController>());
+            players.Add(newPlayer.GetComponent<Player>());
         }
-
-        foreach (CharacterController player in players)
-        {
-            player.enabled = false;
-        }
-        players[0].enabled = true;
         activePlayer = 0;
+        ActivatePlayer(currentPlayer);
     }
 
     private void Update()
@@ -44,7 +57,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (playerInputController.swap)
         {
-            players[activePlayer].enabled = false;
+            DeactivatePlayer(currentPlayer);
             if (activePlayer >= players.Count - 1)
             {
                 activePlayer = 0;
@@ -53,9 +66,22 @@ public class PlayerManager : MonoBehaviour
             {
                 activePlayer++;
             }
-            players[activePlayer].enabled = true;
+            ActivatePlayer(currentPlayer);
         }
         playerInputController.swap = false;
+    }
+
+    private void ActivatePlayer(Player player)
+    {
+        player.cinemachineCamera.enabled = true;
+        player.cameraFollow.transform.rotation = Quaternion.Euler(playerInputController.cameraTargetPitch);
+        player.fuel = maxFuel;
+        player.grenades = maxGrenades;
+        player.jumps = maxJumps;
+    }
+    private void DeactivatePlayer(Player player)
+    {
+        player.cinemachineCamera.enabled = false;
     }
 
 }

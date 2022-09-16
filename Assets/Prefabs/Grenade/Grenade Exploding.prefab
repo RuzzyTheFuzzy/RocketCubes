@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5406462653457136072}
   - component: {fileID: 870060642267944093}
-  m_Layer: 0
+  - component: {fileID: 133162817192226845}
+  m_Layer: 7
   m_Name: Grenade Exploding
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,6 +52,26 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &133162817192226845
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2052177317037137607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 974f89891bafff74ab0257c44e9780c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _handle: {fileID: 3932720743048353261}
+  _body: {fileID: 4096877904218471724}
+  _pin: {fileID: 4001597331170506149}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 2147483647
+  radius: 30
+  power: 50
 --- !u!1 &2561312289819622320
 GameObject:
   m_ObjectHideFlags: 0
@@ -64,7 +85,7 @@ GameObject:
   - component: {fileID: 6337179270206689590}
   - component: {fileID: 2039445743505587711}
   - component: {fileID: 4096877904218471724}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -158,9 +179,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2561312289819622320}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.5
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.2
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -179,7 +200,7 @@ GameObject:
   - component: {fileID: 9147757846688226111}
   - component: {fileID: 7459672563568729197}
   - component: {fileID: 3932720743048353261}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -273,9 +294,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7834292671782088598}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.3
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.2
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1
@@ -294,7 +315,7 @@ GameObject:
   - component: {fileID: 8921667632312559364}
   - component: {fileID: 4572007509787154471}
   - component: {fileID: 4001597331170506149}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Pin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -388,9 +409,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8315627397510607295}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 0.1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0.2
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 1

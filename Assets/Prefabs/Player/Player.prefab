@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4439030672414231103}
   - component: {fileID: 2775052983635981473}
-  - component: {fileID: 7763248399715206105}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -48,32 +47,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d423cfa3322e4d479ffd85f13231ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7763248399715206105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7430208457240675466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 962b98afbd17328429c5f104ee9fa405, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fuel: 100
+  fuel: 0
   speed: 15
   jumpForce: 10
-  maxThrowForce: 10
-  throwAngle: {x: 0, y: 1, z: 1}
-  rotationSpeed: 0.1
-  controllerMultiplier: 2000
-  ball: {fileID: 2630075054002404694}
-  cameraFollow: {fileID: 3797579320548825872}
   cinemachineCamera: {fileID: 7677180028656703915}
-  grenade: {fileID: 2052177317037137607, guid: 60247e89c0e3bf147b52f7126c19168b, type: 3}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 64
+  cameraFollow: {fileID: 3797579320548825872}
+  ball: {fileID: 2630075054002404694}
 --- !u!1001 &1595944603064502724
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -267,6 +246,10 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 3797579320548825873}
+    - target: {fileID: 2298770463305282654, guid: 595a248560318ef4b9ad53efd72ba759, type: 3}
+      propertyPath: CameraCollisionFilter.m_Bits
+      value: 55
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 595a248560318ef4b9ad53efd72ba759, type: 3}
 --- !u!4 &7677180028656703914 stripped

@@ -10,22 +10,31 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private Button firstSelected;
     [SerializeField] private int menuSceneInt = 0;
-    private bool paused = false;
+    private bool _paused = false;
+
+    public bool paused
+    {
+        get
+        {
+            return _paused;
+        }
+    }
+
 
     public void Pause()
     {
-        if (paused)
+        if (_paused)
         {
-            firstSelected.Select();
-            pauseMenu.SetActive(true);
-            paused = true;
-            Time.timeScale = 0;
+            pauseMenu.SetActive(false);
+            _paused = false;
+            Time.timeScale = 1;
         }
         else
         {
-            pauseMenu.SetActive(false);
-            paused = false;
-            Time.timeScale = 1;
+            firstSelected.Select();
+            pauseMenu.SetActive(true);
+            _paused = true;
+            Time.timeScale = 0;
         }
     }
     public void Menu()

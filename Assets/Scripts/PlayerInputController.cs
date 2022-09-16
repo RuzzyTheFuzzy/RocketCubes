@@ -5,19 +5,20 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputController : MonoBehaviour
 {
+    [SerializeField]
     public Vector2 move;
     public Vector2 look;
     public bool jump;
     public bool swap;
     public Vector2 cameraTargetPitch;
     public bool grenade;
-
+    public bool pause;
     public void OnMove(InputValue value)
     {
         MoveInput(value.Get<Vector2>());
     }
 
-    public void MoveInput(Vector2 newMoveDirection)
+    private void MoveInput(Vector2 newMoveDirection)
     {
         move = newMoveDirection;
     }
@@ -27,7 +28,7 @@ public class PlayerInputController : MonoBehaviour
         JumpInput(value.isPressed);
     }
 
-    public void JumpInput(bool newJumpState)
+    private void JumpInput(bool newJumpState)
     {
         jump = newJumpState;
     }
@@ -37,7 +38,7 @@ public class PlayerInputController : MonoBehaviour
         SwapInput(value.isPressed);
     }
 
-    public void SwapInput(bool newSwapState)
+    private void SwapInput(bool newSwapState)
     {
         swap = newSwapState;
     }
@@ -47,7 +48,7 @@ public class PlayerInputController : MonoBehaviour
         LookInput(value.Get<Vector2>());
     }
 
-    public void LookInput(Vector2 newLookDirection)
+    private void LookInput(Vector2 newLookDirection)
     {
         look = newLookDirection;
     }
@@ -57,9 +58,19 @@ public class PlayerInputController : MonoBehaviour
         GrenadeInput(value.isPressed);
     }
 
-    public void GrenadeInput(bool newGrenadeState)
+    private void GrenadeInput(bool newGrenadeState)
     {
         grenade = newGrenadeState;
+    }
+
+    private void OnPause(InputValue value)
+    {
+        PauseInput(value.isPressed);
+    }
+
+    private void PauseInput(bool newPauseState)
+    {
+        pause = newPauseState;
     }
 
 }
