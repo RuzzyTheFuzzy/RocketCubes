@@ -7,36 +7,34 @@ using Cinemachine;
 public class CharacterController : MonoBehaviour
 {
     [SerializeField] private float maxThrowForce;
-    [SerializeField] private Vector3 throwAngle = Vector3.forward;
+    [SerializeField] private float throwAngle;
     [SerializeField] private float rotationSpeed = 1f;
     [SerializeField] private float controllerMultiplier = 1f;
-    [SerializeField] private PlayerManager playerManager;
-    [SerializeField] private WeaponManager weapons;
-    [SerializeField] private PauseMenu pauseMenu;
     private Player currentPlayer
     {
         get
         {
-            return playerManager.currentPlayer;
-        }
-    }
-    public WeaponManager weaponManager
-    {
-        get
-        {
-            return weapons;
+            return GameManager.instance.playerManager.currentPlayer;
         }
     }
 
-    private void Update()
+    public float maxPower
     {
-        currentPlayer.CameraMove();
+        get
+        {
+            return maxThrowForce;
+        }
+    }
+
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void LateUpdate()
     {
-        if (!pauseMenu.paused)
-            currentPlayer.CameraRotation(rotationSpeed, controllerMultiplier);
+        currentPlayer.CameraMove();
+        currentPlayer.CameraRotation(rotationSpeed, controllerMultiplier);
     }
 
     private void FixedUpdate()

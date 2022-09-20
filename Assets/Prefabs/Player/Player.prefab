@@ -48,11 +48,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fuel: 0
-  speed: 15
+  jumps: 0
+  grenades: 0
+  health: 3
+  id: 0
+  speed: 30
   jumpForce: 10
   cinemachineCamera: {fileID: 7677180028656703915}
   cameraFollow: {fileID: 3797579320548825872}
-  ball: {fileID: 2630075054002404694}
 --- !u!1001 &1595944603064502724
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -70,7 +73,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3628221772105610376, guid: 7a1aa820b1ad11347990197041eff2ca, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.28
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3628221772105610376, guid: 7a1aa820b1ad11347990197041eff2ca, type: 3}
       propertyPath: m_LocalPosition.z
@@ -115,11 +118,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3628221772105610376, guid: 7a1aa820b1ad11347990197041eff2ca, type: 3}
   m_PrefabInstance: {fileID: 1595944603064502724}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2630075054002404694 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3628221772105610386, guid: 7a1aa820b1ad11347990197041eff2ca, type: 3}
-  m_PrefabInstance: {fileID: 1595944603064502724}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2675878423778559447
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -137,7 +135,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1265818783975120582, guid: c54cbe38d4d05d247970ca3d13712dfd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.28
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1265818783975120582, guid: c54cbe38d4d05d247970ca3d13712dfd, type: 3}
       propertyPath: m_LocalPosition.z
@@ -247,8 +245,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3797579320548825873}
     - target: {fileID: 2298770463305282654, guid: 595a248560318ef4b9ad53efd72ba759, type: 3}
-      propertyPath: CameraCollisionFilter.m_Bits
-      value: 55
+      propertyPath: ShoulderOffset.x
+      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 595a248560318ef4b9ad53efd72ba759, type: 3}

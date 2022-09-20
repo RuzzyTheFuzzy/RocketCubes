@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
-
     [SerializeField] private Rigidbody _handle;
     [SerializeField] private Rigidbody _body;
     [SerializeField] private Rigidbody _pin;
@@ -45,10 +44,9 @@ public class Grenade : MonoBehaviour
         _handle.AddRelativeForce(Vector3.forward * 5f);
         _handle.AddRelativeTorque(Vector3.down * 5f);
         _pin.AddRelativeForce(Vector3.back * 2f);
-        _body.AddRelativeTorque((Vector3.back + Vector3.up) * Random.Range(-5f, 0f));
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (timerStarted)
         {
@@ -62,7 +60,7 @@ public class Grenade : MonoBehaviour
                 timerStarted = false;
             }
         }
-        // Remove the pins and handles and this script after 5 secounds of Explode running
+        // Remove the pins and handles and this script after despawnTimer seconds of Explode running
         if (despawn)
         {
             despawnTimer -= Time.deltaTime;
@@ -87,6 +85,8 @@ public class Grenade : MonoBehaviour
         Destroy(_body.gameObject);
         despawn = true;
     }
+
+
 
     private void OnDrawGizmos()
     {

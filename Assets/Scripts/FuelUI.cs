@@ -5,8 +5,8 @@ using TMPro;
 
 public class FuelUI : MonoBehaviour
 {
-    [SerializeField] private RectTransform rectTransform;
     [SerializeField] private TMP_Text text;
+    [SerializeField] private RectTransform rectTransform;
 
     public void FuelUIUpdate(float fuel, float fuelMax)
     {

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputController : MonoBehaviour
 {
-    [SerializeField]
+    [SerializeField] private PlayerInput playerInput;
     public Vector2 move;
     public Vector2 look;
     public bool jump;
@@ -13,6 +13,14 @@ public class PlayerInputController : MonoBehaviour
     public Vector2 cameraTargetPitch;
     public bool grenade;
     public bool pause;
+
+    public bool isCurrentDeviceMouse
+    {
+        get
+        {
+            return playerInput.currentControlScheme == "Keyboard&Mouse";
+        }
+    }
     public void OnMove(InputValue value)
     {
         MoveInput(value.Get<Vector2>());

@@ -11,9 +11,14 @@ public class GrenadeUI : MonoBehaviour
     public void GrenadeUIUpdate(int grenades)
     {
 
-        for (int i = 2; i > grenades; i--)
+        foreach (Image image in grenadeImages)
         {
-            grenadeImages[i - 1].enabled = false;
+            image.enabled = false;
+        }
+
+        for (int i = 0; i < grenades; i++)
+        {
+            grenadeImages[i].enabled = true;
         }
 
     }
