@@ -15,8 +15,7 @@ public class WeaponManager : MonoBehaviour
     private float mass;
     private LayerMask GrenadeCollisionMask;
 
-
-    private void Awake()
+    public void NewGame()
     {
         line = GetComponent<LineRenderer>();
         mass = grenade.GetComponent<Grenade>().body.mass;
@@ -30,6 +29,16 @@ public class WeaponManager : MonoBehaviour
             }
         }
     }
+
+    public void StopGame()
+    {
+        line = null;
+        mass = -1;
+
+        GrenadeCollisionMask = new LayerMask();
+
+    }
+
     public bool GrenadeToss(Rigidbody rigidBody, Transform ball, GameObject cameraFollow, float throwAngle, float throwForce)
     {
         bool thrown = false;

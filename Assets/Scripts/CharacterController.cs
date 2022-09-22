@@ -26,11 +26,6 @@ public class CharacterController : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-    }
-
     private void LateUpdate()
     {
         currentPlayer.CameraMove();

@@ -1,9 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public enum GameState
+    {
+        Menu,
+        Game,
+        Win,
+        Transition
+    }
+
     public static GameManager instance { get; private set; }
     public PlayerManager playerManager { get; private set; }
     public WeaponManager weaponManager { get; private set; }
@@ -11,6 +20,7 @@ public class GameManager : MonoBehaviour
     public PlayerInputController playerInputController { get; private set; }
     public CharacterController characterController { get; private set; }
     public TurnManager turnManager { get; private set; }
+    public GameState gameState;
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -20,11 +30,57 @@ public class GameManager : MonoBehaviour
         }
 
         instance = this;
-        uIManager = GetComponentInChildren<UIManager>();
+        gameState = GameState.Menu;
+
+
         playerManager = GetComponentInChildren<PlayerManager>();
+        turnManager = GetComponentInChildren<TurnManager>();
         weaponManager = GetComponentInChildren<WeaponManager>();
+        uIManager = GetComponentInChildren<UIManager>();
         playerInputController = GetComponentInChildren<PlayerInputController>();
         characterController = GetComponentInChildren<CharacterController>();
-        turnManager = GetComponentInChildren<TurnManager>();
+
+        DontDestroyOnLoad(instance.gameObject);
     }
+
+    public void StartGame()
+    {
+        gameState = GameState.Game;
+        playerManager.NewGame();
+        turnManager.enabled = true;
+        turnManager.NewGame();
+        weaponManager.NewGame();
+        uIManager.NewGame();
+        uIManager.enabled = true;
+        characterController.enabled = true;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void EndGame()
+    {
+        playerManager.StopGame();
+        turnManager.enabled = false;
+        turnManager.StopGame();
+        weaponManager.StopGame();
+        uIManager.enabled = false;
+        uIManager.StopGame();
+        characterController.enabled = false;
+        Cursor.lockState = CursorLockMode.None;
+        if (gameState == GameState.Win)
+        {
+            SceneManager.LoadScene("Win");
+        }
+        else
+        {
+            gameState = GameState.Menu;
+        }
+    }
+
+    public void Win()
+    {
+        gameState = GameState.Win;
+        Debug.Log(playerManager.currentPlayer.name + " WINS!!!");
+        EndGame();
+    }
+
 }

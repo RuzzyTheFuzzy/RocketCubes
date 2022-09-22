@@ -10,7 +10,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private FuelUI fuelUI;
     [SerializeField] private JumpUI jumpUI;
     [SerializeField] private GrenadeUI grenadeUI;
-    [SerializeField] private PowerUI powerUI;
     [SerializeField] private HpUI hpUI;
     [SerializeField] private TimerUI timerUI;
     [SerializeField] private GameObject playerOverlay;
@@ -36,23 +35,39 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void Update()
+    public void NewGame()
     {
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(true);
+        }
+
+    }
+
+    public void StopGame()
+    {
+        foreach (Transform child in transform)
+        {
+            child.gameObject.SetActive(false);
+        }
 
     }
 
     private void LateUpdate()
     {
-        fuelUI.FuelUIUpdate(player.fuel, player.maxFuel);
-        grenadeUI.GrenadeUIUpdate(player.grenades);
-        jumpUI.JumpUIUpdate(player.jumps > 0);
-        powerUI.PowerUIUpdate(player.power, GameManager.instance.characterController.maxPower);
-        hpUI.HpUIUpdate(player.health);
-        timerUI.TimerUIUpdate(GameManager.instance.turnManager.timeRemaining);
-
-        if (GameManager.instance.playerInputController.pause)
+        // Only want to run them during 
+        if (GameManager.instance.gameState == GameManager.GameState.Game)
         {
-            Pause();
+            fuelUI.FuelUIUpdate(player.fuel, player.maxFuel);
+            grenadeUI.GrenadeUIUpdate(player.grenades);
+            jumpUI.JumpUIUpdate(player.jumps > 0);
+            hpUI.HpUIUpdate(player.health);
+            timerUI.TimerUIUpdate(GameManager.instance.turnManager.timeRemaining);
+
+            if (GameManager.instance.playerInputController.pause)
+            {
+                Pause();
+            }
         }
         GameManager.instance.playerInputController.pause = false;
     }
@@ -79,13 +94,14 @@ public class UIManager : MonoBehaviour
     {
         if (_paused)
         {
-            roundOverlay.SetActive(GameManager.instance.turnManager.roundTransition);
-            playerOverlay.SetActive(!GameManager.instance.turnManager.roundTransition);
+            roundOverlay.SetActive(GameManager.instance.gameState == GameManager.GameState.Transition);
+            playerOverlay.SetActive(GameManager.instance.gameState == GameManager.GameState.Game);
             pauseMenu.SetActive(false);
             _paused = false;
             Time.timeScale = 1;
             GameManager.instance.playerInputController.pause = false;
             GameManager.instance.characterController.enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
         }
         else
         {
@@ -96,11 +112,13 @@ public class UIManager : MonoBehaviour
             _paused = true;
             Time.timeScale = 0;
             GameManager.instance.characterController.enabled = false;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
     public void Menu()
     {
-        Time.timeScale = 1;
+        Pause();
+        GameManager.instance.EndGame();
         SceneManager.LoadScene(menuSceneInt);
     }
     public void Quit()

@@ -4,15 +4,12 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-
-    public PlayerInputController playerInputController { get; private set; }
-    private float transitionTimer;
     [SerializeField] private float _maxFuel;
     [SerializeField] private int maxGrenades;
     [SerializeField] private int maxJumps;
     [SerializeField] private int numPlayers = 1;
-    [SerializeField] private Transform spawns;
     [SerializeField] private GameObject player;
+    private Transform spawns;
     private Transform[] spawnPoints;
     private List<Player> players = new List<Player>();
     private int activePlayer;
@@ -26,14 +23,22 @@ public class PlayerManager : MonoBehaviour
         }
     }
 
-
-    private void Start()
+    public int playersLeft
     {
+        get
+        {
+            return players.Count;
+        }
+    }
+
+
+    public void NewGame()
+    {
+        spawns = LevelManager.instance.spawns;
         spawnPoints = spawns.GetComponentsInChildren<Transform>();
-        playerInputController = gameObject.GetComponent<PlayerInputController>();
         for (int i = 0; i < numPlayers; i++)
         {
-            GameObject newPlayer = Instantiate(player, RandomSpawnpoint(), transform.rotation, transform);
+            GameObject newPlayer = Instantiate(player, RandomSpawnpoint(), transform.rotation);
             newPlayer.name = "Player " + (i + 1);
             Player newPlayerComponent = newPlayer.GetComponent<Player>();
             newPlayerComponent.id = i;
@@ -45,41 +50,16 @@ public class PlayerManager : MonoBehaviour
         currentPlayer = players[activePlayer];
         ActivatePlayer(currentPlayer);
     }
-
-    private void Update()
+    public void StopGame()
     {
-        if (transitionTimer > 0)
-        {
-            transitionTimer -= Time.deltaTime;
-            if ((transitionTimer) <= 0)
-            {
-                SwitchPlayer();
-            }
-        }
-        else
-        {
-            transitionTimer = ShouldSwitch();
-        }
+        spawns = null;
+        players = new List<Player>();
+        activePlayer = -1;
+        currentPlayer = null;
     }
 
-    private float ShouldSwitch()
+    public void SwitchPlayer()
     {
-        if (GameManager.instance.turnManager.newTurn)
-            return GameManager.instance.turnManager.turnTransitionTime;
-        if (playerInputController.swap)
-        {
-            playerInputController.swap = false;
-            return 0.1f;
-        }
-        return 0f;
-    }
-
-    private void SwitchPlayer()
-    {
-        if (players.Count <= 1)
-        {
-            Win();
-        }
         DeactivatePlayer(currentPlayer);
         if (activePlayer >= players.Count - 1)
         {
@@ -95,15 +75,10 @@ public class PlayerManager : MonoBehaviour
         ActivatePlayer(currentPlayer);
     }
 
-    private void Win()
-    {
-        Debug.Log(players[0].name + " WINS!!!");
-    }
-
     private void ActivatePlayer(Player player)
     {
         player.cinemachineCamera.enabled = true;
-        player.cameraFollow.transform.rotation = Quaternion.Euler(playerInputController.cameraTargetPitch);
+        player.cameraFollow.transform.rotation = Quaternion.Euler(GameManager.instance.playerInputController.cameraTargetPitch);
         player.fuel = player.maxFuel;
         player.grenades = maxGrenades;
         player.jumps = maxJumps;
@@ -121,11 +96,13 @@ public class PlayerManager : MonoBehaviour
 
         if (id == activePlayer)
         {
+            // The list collapses so the next player is the same as switching from the previous
             activePlayer--;
             SwitchPlayer();
         }
         else
         {
+            // Someone else died so who cares just update the activePlayer
             activePlayer = currentPlayer.id;
         }
     }
@@ -144,4 +121,11 @@ public class PlayerManager : MonoBehaviour
         return spawnPoints[index].position;
     }
 
+    public void AllChangeMaxFuel(float fuel)
+    {
+        foreach (Player player in players)
+        {
+            player.ChangeMaxFuel(fuel);
+        }
+    }
 }

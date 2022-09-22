@@ -62,7 +62,6 @@ public class Player : MonoBehaviour
         groundCheck = GetComponentInChildren<GroundCheck>();
         cinemachineCamera = GetComponentInChildren<CinemachineVirtualCamera>();
         ball = rigidBody.transform;
-        line = cameraFollow.GetComponent<LineRenderer>();
         maxFuel = GameManager.instance.playerManager.maxFuel;
     }
 
@@ -101,13 +100,19 @@ public class Player : MonoBehaviour
 
     public void Move()
     {
-        if (playerInputController.move.sqrMagnitude > Vector2.zero.sqrMagnitude)
+        if (playerInputController.move.sqrMagnitude > 0)
         {
-            // Make Matrix with only cameras y axis
-            Vector3 cameraRotation = new Vector3(0f, cameraFollow.transform.rotation.eulerAngles.y, 0f);
+            // X left-right, Z forward-backwards
             Vector3 direction = new Vector3(playerInputController.move.x, 0f, playerInputController.move.y);
-            Matrix4x4 matrix4X4 = Matrix4x4.TRS(cameraFollow.transform.position, Quaternion.Euler(cameraRotation), cameraFollow.transform.lossyScale);
-            direction = matrix4X4.MultiplyVector(direction);
+
+            Vector3 cameraForward = cameraFollow.transform.forward;
+            // We don't want any force upwards
+            cameraForward.y = 0;
+
+            direction = Quaternion.FromToRotation(Vector3.forward, cameraForward.normalized) * direction;
+
+
+
             float force = Mathf.Min(speed, fuel);
             rigidBody.AddForce(direction * force);
             fuel = Mathf.Max(fuel - force, 0);
@@ -155,5 +160,10 @@ public class Player : MonoBehaviour
         {
             GameManager.instance.playerManager.Death(id);
         }
+    }
+
+    public void ChangeMaxFuel(float fuel)
+    {
+        maxFuel += fuel;
     }
 }
