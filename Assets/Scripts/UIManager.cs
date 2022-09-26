@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 using TMPro;
 
 public class UIManager : MonoBehaviour
@@ -16,7 +15,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject roundOverlay;
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private Button firstSelected;
-    [SerializeField] private int menuSceneInt = 0;
     private bool _paused = false;
 
     public bool paused
@@ -55,7 +53,7 @@ public class UIManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        // Only want to run them during 
+        // Only want to run them during Gameplay
         if (GameManager.instance.gameState == GameManager.GameState.Game)
         {
             fuelUI.FuelUIUpdate(player.fuel, player.maxFuel);
@@ -119,7 +117,6 @@ public class UIManager : MonoBehaviour
     {
         Pause();
         GameManager.instance.EndGame();
-        SceneManager.LoadScene(menuSceneInt);
     }
     public void Quit()
     {

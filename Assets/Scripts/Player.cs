@@ -12,7 +12,8 @@ public class Player : MonoBehaviour
     public int grenades;
     public int health;
     public int id;
-    [SerializeField] private float speed;
+    public float speed;
+    [SerializeField] private bool anti;
     [SerializeField] private float jumpForce;
     public Transform ball { get; private set; }
     public CinemachineVirtualCamera cinemachineCamera;
@@ -142,7 +143,7 @@ public class Player : MonoBehaviour
             }
             else if (throwForce > 0)
             {
-                if (GameManager.instance.weaponManager.GrenadeToss(rigidBody, ball, cameraFollow, throwAngle, throwForce))
+                if (GameManager.instance.weaponManager.GrenadeToss(rigidBody, ball, cameraFollow, throwAngle, throwForce, anti))
                     grenades--;
                 throwForce = 0;
                 playerInputController.grenade = false;

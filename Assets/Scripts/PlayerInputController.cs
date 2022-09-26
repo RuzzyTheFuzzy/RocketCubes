@@ -13,6 +13,7 @@ public class PlayerInputController : MonoBehaviour
     public Vector2 cameraTargetPitch;
     public bool grenade;
     public bool pause;
+    public bool randomKill;
 
     public bool isCurrentDeviceMouse
     {
@@ -79,6 +80,16 @@ public class PlayerInputController : MonoBehaviour
     private void PauseInput(bool newPauseState)
     {
         pause = newPauseState;
+    }
+
+    private void OnRandomKill(InputValue value)
+    {
+        RandomKillInput(value.isPressed);
+    }
+
+    private void RandomKillInput(bool newKillState)
+    {
+        randomKill = newKillState;
     }
 
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grenade : MonoBehaviour
+public class AntiGrenade : MonoBehaviour
 {
     [SerializeField] private Rigidbody _handle;
     [SerializeField] private Rigidbody _body;
@@ -79,7 +79,7 @@ public class Grenade : MonoBehaviour
             {
                 Rigidbody rigidBody = collider.attachedRigidbody;
                 // Mathf.Max to avoid dividing with 0 altough unlikely
-                rigidBody.AddForce(Vector3.Normalize(rigidBody.position - _body.position) * power / Mathf.Max(Mathf.Sqrt(Vector3.Distance(rigidBody.position, _body.position)), 1f), ForceMode.Impulse);
+                rigidBody.AddForce(Vector3.Normalize(rigidBody.position - _body.position) * -power / Mathf.Max(Mathf.Sqrt(Vector3.Distance(rigidBody.position, _body.position)), 1f), ForceMode.Impulse);
             }
         }
         Destroy(_body.gameObject);

@@ -6,6 +6,7 @@ public class WeaponManager : MonoBehaviour
 {
 
     [SerializeField] private GameObject grenade;
+    [SerializeField] private GameObject antiGrenade;
     [SerializeField][Range(0f, 1f)] private float handleMultiplier = 0.5f;
     [SerializeField][Range(0f, 1f)] private float pinMultiplier = 0f;
     [SerializeField][Range(0.1f, 30f)] private float explodeTimer = 10f;
@@ -39,7 +40,7 @@ public class WeaponManager : MonoBehaviour
 
     }
 
-    public bool GrenadeToss(Rigidbody rigidBody, Transform ball, GameObject cameraFollow, float throwAngle, float throwForce)
+    public bool GrenadeToss(Rigidbody rigidBody, Transform ball, GameObject cameraFollow, float throwAngle, float throwForce, bool anti)
     {
         bool thrown = false;
         Vector3 velocity = rigidBody.velocity;
@@ -53,11 +54,22 @@ public class WeaponManager : MonoBehaviour
         if (!Physics.Raycast(new Ray(releasePosition, direction), distance))
         {
             thrown = true;
-            Grenade newGrenade = Instantiate(grenade, releasePosition + (direction * distance), rotation, transform).GetComponent<Grenade>();
-            newGrenade.body.AddForce(throwForce * direction, ForceMode.Impulse);
-            newGrenade.handle.AddForce(throwForce * direction * handleMultiplier, ForceMode.Impulse);
-            newGrenade.pin.AddForce(throwForce * direction * pinMultiplier, ForceMode.Impulse);
-            newGrenade.explodeTimer = explodeTimer;
+            if (anti)
+            {
+                AntiGrenade newGrenade = Instantiate(antiGrenade, releasePosition + (direction * distance), rotation, transform).GetComponent<AntiGrenade>();
+                newGrenade.body.AddForce(throwForce * direction, ForceMode.Impulse);
+                newGrenade.handle.AddForce(throwForce * direction * handleMultiplier, ForceMode.Impulse);
+                newGrenade.pin.AddForce(throwForce * direction * pinMultiplier, ForceMode.Impulse);
+                newGrenade.explodeTimer = explodeTimer;
+            }
+            else
+            {
+                Grenade newGrenade = Instantiate(grenade, releasePosition + (direction * distance), rotation, transform).GetComponent<Grenade>();
+                newGrenade.body.AddForce(throwForce * direction, ForceMode.Impulse);
+                newGrenade.handle.AddForce(throwForce * direction * handleMultiplier, ForceMode.Impulse);
+                newGrenade.pin.AddForce(throwForce * direction * pinMultiplier, ForceMode.Impulse);
+                newGrenade.explodeTimer = explodeTimer;
+            }
         }
         return thrown;
     }

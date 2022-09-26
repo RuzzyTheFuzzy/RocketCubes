@@ -4,36 +4,26 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] private float _maxFuel;
-    [SerializeField] private int maxGrenades;
     [SerializeField] private int maxJumps;
-    [SerializeField] private int numPlayers = 1;
     [SerializeField] private GameObject player;
     private Transform spawns;
     private Transform[] spawnPoints;
     private List<Player> players = new List<Player>();
     private int activePlayer;
     public Player currentPlayer { get; private set; }
+    public Color[] winningColors { get; private set; }
 
-    public float maxFuel
-    {
-        get
-        {
-            return _maxFuel;
-        }
-    }
-
-    public int playersLeft
-    {
-        get
-        {
-            return players.Count;
-        }
-    }
+    public float maxFuel { get; private set; }
+    private int maxGrenades;
+    public int numPlayers { get; private set; }
 
 
     public void NewGame()
     {
+        maxFuel = OptionsManager.instance.maxFuel.value;
+        numPlayers = (int)OptionsManager.instance.players.value;
+        maxGrenades = (int)OptionsManager.instance.grenades.value;
+        winningColors = new Color[4];
         spawns = LevelManager.instance.spawns;
         spawnPoints = spawns.GetComponentsInChildren<Transform>();
         for (int i = 0; i < numPlayers; i++)
@@ -42,6 +32,7 @@ public class PlayerManager : MonoBehaviour
             newPlayer.name = "Player " + (i + 1);
             Player newPlayerComponent = newPlayer.GetComponent<Player>();
             newPlayerComponent.id = i;
+            newPlayerComponent.speed = OptionsManager.instance.speed.value;
             Material newMaterial = newPlayer.GetComponentInChildren<MeshRenderer>().material;
             newMaterial.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
             players.Add(newPlayerComponent);
@@ -54,8 +45,21 @@ public class PlayerManager : MonoBehaviour
     {
         spawns = null;
         players = new List<Player>();
-        activePlayer = -1;
         currentPlayer = null;
+    }
+
+    private void Update()
+    {
+        if (players.Count <= 1)
+        {
+            GameManager.instance.Win();
+        }
+
+        if (GameManager.instance.playerInputController.randomKill)
+        {
+            RandomKill();
+        }
+        GameManager.instance.playerInputController.randomKill = false;
     }
 
     public void SwitchPlayer()
@@ -90,13 +94,14 @@ public class PlayerManager : MonoBehaviour
 
     public void Death(int id)
     {
+        winningColors[players.Count - 1] = players[id].GetComponentInChildren<MeshRenderer>().material.color;
         Destroy(players[id].gameObject);
         players.RemoveAt(id);
         UpdatePlayers();
 
         if (id == activePlayer)
         {
-            // The list collapses so the next player is the same as switching from the previous
+            // The list collapses so the next player is the same as switching from the previous, even if its outside of players array
             activePlayer--;
             SwitchPlayer();
         }
@@ -117,7 +122,8 @@ public class PlayerManager : MonoBehaviour
 
     public Vector3 RandomSpawnpoint()
     {
-        int index = Random.Range(0, spawnPoints.Length);
+        // The parent empty will also be included at index 0, so just skip it
+        int index = Random.Range(1, spawnPoints.Length);
         return spawnPoints[index].position;
     }
 
@@ -127,5 +133,16 @@ public class PlayerManager : MonoBehaviour
         {
             player.ChangeMaxFuel(fuel);
         }
+    }
+
+    public void Win()
+    {
+        winningColors[0] = players[0].GetComponentInChildren<MeshRenderer>().material.color;
+    }
+
+    private void RandomKill()
+    {
+        Player randomPlayer = players[Random.Range(0, players.Count)];
+        randomPlayer.Hit();
     }
 }

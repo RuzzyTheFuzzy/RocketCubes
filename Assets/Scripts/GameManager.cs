@@ -47,10 +47,11 @@ public class GameManager : MonoBehaviour
     {
         gameState = GameState.Game;
         playerManager.NewGame();
-        turnManager.enabled = true;
         turnManager.NewGame();
         weaponManager.NewGame();
         uIManager.NewGame();
+        playerManager.enabled = true;
+        turnManager.enabled = true;
         uIManager.enabled = true;
         characterController.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
@@ -59,11 +60,12 @@ public class GameManager : MonoBehaviour
     public void EndGame()
     {
         playerManager.StopGame();
-        turnManager.enabled = false;
         turnManager.StopGame();
         weaponManager.StopGame();
-        uIManager.enabled = false;
         uIManager.StopGame();
+        playerManager.enabled = false;
+        turnManager.enabled = false;
+        uIManager.enabled = false;
         characterController.enabled = false;
         Cursor.lockState = CursorLockMode.None;
         if (gameState == GameState.Win)
@@ -73,12 +75,14 @@ public class GameManager : MonoBehaviour
         else
         {
             gameState = GameState.Menu;
+            SceneManager.LoadScene("Main Menu");
         }
     }
 
     public void Win()
     {
         gameState = GameState.Win;
+        playerManager.Win();
         Debug.Log(playerManager.currentPlayer.name + " WINS!!!");
         EndGame();
     }

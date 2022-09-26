@@ -6,7 +6,6 @@ using Cinemachine;
 public class TurnManager : MonoBehaviour
 {
 
-    [SerializeField] private float turnLenght;
     [SerializeField] private float roundTransitionTime = 10f;
     [SerializeField] private float cameraOrbitSpeed = 0.01f;
     [SerializeField] private float roundScaler;
@@ -15,6 +14,7 @@ public class TurnManager : MonoBehaviour
     private float transitionTimer;
     private CinemachineVirtualCamera roundCamera;
     private Transform level;
+    private float turnLenght;
     private float turnTime;
     private Vector3 size;
     private int round;
@@ -42,6 +42,7 @@ public class TurnManager : MonoBehaviour
 
     public void NewGame()
     {
+        turnLenght = OptionsManager.instance.turnLength.value;
         level = LevelManager.instance.level;
         roundCamera = LevelManager.instance.roundCamera;
         cameraOrbitTransposer = roundCamera.GetCinemachineComponent<CinemachineOrbitalTransposer>();
@@ -80,10 +81,6 @@ public class TurnManager : MonoBehaviour
                 GameManager.instance.playerManager.SwitchPlayer();
                 GameManager.instance.playerInputController.swap = false;
             }
-        }
-        if (GameManager.instance.playerManager.playersLeft <= 1)
-        {
-            GameManager.instance.Win();
         }
     }
 
@@ -155,7 +152,6 @@ public class TurnManager : MonoBehaviour
             GameManager.instance.uIManager.PlayerOverlay(true);
             GameManager.instance.uIManager.RoundOverlay();
             GameManager.instance.playerInputController.swap = false;
-            Debug.Log(turn);
             GameManager.instance.gameState = GameManager.GameState.Game;
             NextTurn();
         }
