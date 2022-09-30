@@ -1934,7 +1934,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1230265624}
   m_Layer: 0
-  m_Name: SpawnPoints
+  m_Name: Spawn Points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12491,9 +12491,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fcddd38f9aedf04daa1c96ef2a5378d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _spawns: {fileID: 1230265624}
-  _level: {fileID: 1163974470}
-  _roundCamera: {fileID: 1686271885}
+  spawns: {fileID: 1230265624}
+  level: {fileID: 1163974470}
+  roundCamera: {fileID: 1686271885}
 --- !u!4 &1777745392
 Transform:
   m_ObjectHideFlags: 0

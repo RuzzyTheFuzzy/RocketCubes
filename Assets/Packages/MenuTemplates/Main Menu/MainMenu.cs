@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
+    // Which scene to go to
     [SerializeField] private int scene = 1;
 
     public void PlayGame()
@@ -14,6 +15,7 @@ public class MainMenu : MonoBehaviour
 
     public void QuitGame()
     {
+        // Quit dosent work in editor, so lovely log tells us when it happends
         Debug.Log("Quit Button Pressed");
         Application.Quit();
     }

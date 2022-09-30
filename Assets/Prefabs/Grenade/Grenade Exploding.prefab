@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 974f89891bafff74ab0257c44e9780c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _handle: {fileID: 3932720743048353261}
-  _body: {fileID: 4096877904218471724}
-  _pin: {fileID: 4001597331170506149}
+  handle: {fileID: 3932720743048353261}
+  body: {fileID: 4096877904218471724}
+  pin: {fileID: 4001597331170506149}
   layerMask:
     serializedVersion: 2
     m_Bits: 2147483647

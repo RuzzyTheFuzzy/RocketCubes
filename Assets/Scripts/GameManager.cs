@@ -2,71 +2,71 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+public enum GameState
+{
+    Menu,
+    Game,
+    Win,
+    Transition
+}
 
 public class GameManager : MonoBehaviour
 {
-    public enum GameState
-    {
-        Menu,
-        Game,
-        Win,
-        Transition
-    }
 
-    public static GameManager instance { get; private set; }
-    public PlayerManager playerManager { get; private set; }
-    public WeaponManager weaponManager { get; private set; }
-    public UIManager uIManager { get; private set; }
-    public PlayerInputController playerInputController { get; private set; }
-    public CharacterController characterController { get; private set; }
-    public TurnManager turnManager { get; private set; }
-    public GameState gameState;
+    public static GameManager Instance { get; private set; }
+    public static PlayerManager PlayerManager { get; private set; }
+    public static WeaponManager WeaponManager { get; private set; }
+    public static UIManager UIManager { get; private set; }
+    public static PlayerInputController PlayerInputController { get; private set; }
+    public static CharacterController CharacterController { get; private set; }
+    public static TurnManager TurnManager { get; private set; }
+    public static GameState gameState;
     private void Awake()
     {
-        if (instance != null && instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(this);
             return;
         }
 
-        instance = this;
+        Instance = this;
         gameState = GameState.Menu;
 
 
-        playerManager = GetComponentInChildren<PlayerManager>();
-        turnManager = GetComponentInChildren<TurnManager>();
-        weaponManager = GetComponentInChildren<WeaponManager>();
-        uIManager = GetComponentInChildren<UIManager>();
-        playerInputController = GetComponentInChildren<PlayerInputController>();
-        characterController = GetComponentInChildren<CharacterController>();
+        PlayerManager = GetComponentInChildren<PlayerManager>();
+        TurnManager = GetComponentInChildren<TurnManager>();
+        WeaponManager = GetComponentInChildren<WeaponManager>();
+        UIManager = GetComponentInChildren<UIManager>();
+        PlayerInputController = GetComponentInChildren<PlayerInputController>();
+        CharacterController = GetComponentInChildren<CharacterController>();
 
-        DontDestroyOnLoad(instance.gameObject);
+        DontDestroyOnLoad(Instance.gameObject);
     }
 
     public void StartGame()
     {
         gameState = GameState.Game;
-        playerManager.NewGame();
-        turnManager.NewGame();
-        weaponManager.NewGame();
-        uIManager.NewGame();
-        playerManager.enabled = true;
-        turnManager.enabled = true;
-        uIManager.enabled = true;
-        characterController.enabled = true;
+        PlayerManager.NewGame();
+        TurnManager.NewGame();
+        WeaponManager.NewGame();
+        UIManager.NewGame();
+        PlayerManager.enabled = true;
+        TurnManager.enabled = true;
+        UIManager.enabled = true;
+        CharacterController.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void EndGame()
     {
-        playerManager.StopGame();
-        turnManager.StopGame();
-        weaponManager.StopGame();
-        uIManager.StopGame();
-        playerManager.enabled = false;
-        turnManager.enabled = false;
-        uIManager.enabled = false;
-        characterController.enabled = false;
+        PlayerManager.StopGame();
+        TurnManager.StopGame();
+        WeaponManager.StopGame();
+        UIManager.StopGame();
+        PlayerManager.enabled = false;
+        TurnManager.enabled = false;
+        UIManager.enabled = false;
+        CharacterController.enabled = false;
         Cursor.lockState = CursorLockMode.None;
         if (gameState == GameState.Win)
         {
@@ -82,8 +82,8 @@ public class GameManager : MonoBehaviour
     public void Win()
     {
         gameState = GameState.Win;
-        playerManager.Win();
-        Debug.Log(playerManager.currentPlayer.name + " WINS!!!");
+        PlayerManager.Win();
+        Debug.Log(PlayerManager.CurrentPlayer.name + " WINS!!!");
         EndGame();
     }
 

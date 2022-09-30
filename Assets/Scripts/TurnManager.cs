@@ -42,15 +42,15 @@ public class TurnManager : MonoBehaviour
 
     public void NewGame()
     {
-        turnLenght = OptionsManager.instance.turnLength.value;
-        level = LevelManager.instance.level;
-        roundCamera = LevelManager.instance.roundCamera;
+        turnLenght = Options.TurnLength.value;
+        level = LevelManager.Instance.Level;
+        roundCamera = LevelManager.Instance.RoundCamera;
         cameraOrbitTransposer = roundCamera.GetCinemachineComponent<CinemachineOrbitalTransposer>();
         turn = 0;
         round = 1;
         timer = 0;
         startTransition = true;
-        GameManager.instance.gameState = GameManager.GameState.Transition;
+        GameManager.gameState = GameState.Transition;
     }
 
     public void StopGame()
@@ -76,10 +76,10 @@ public class TurnManager : MonoBehaviour
         else
         {
             turnTime += Time.deltaTime;
-            if (newTurn || GameManager.instance.playerInputController.swap)
+            if (newTurn || GameManager.PlayerInputController.swap)
             {
-                GameManager.instance.playerManager.SwitchPlayer();
-                GameManager.instance.playerInputController.swap = false;
+                GameManager.PlayerManager.SwitchPlayer();
+                GameManager.PlayerInputController.swap = false;
             }
         }
     }
@@ -97,10 +97,10 @@ public class TurnManager : MonoBehaviour
         size = level.localScale;
         roundTransition = true;
         roundCamera.enabled = true;
-        GameManager.instance.characterController.enabled = false;
-        GameManager.instance.uIManager.PlayerOverlay(false);
-        GameManager.instance.uIManager.RoundOverlay(round);
-        GameManager.instance.gameState = GameManager.GameState.Transition;
+        GameManager.CharacterController.enabled = false;
+        GameManager.UIManager.PlayerOverlay(false);
+        GameManager.UIManager.RoundOverlay(round);
+        GameManager.gameState = GameState.Transition;
     }
 
     private void RoundTransition()
@@ -109,13 +109,13 @@ public class TurnManager : MonoBehaviour
 
         if (timer >= roundTransitionTime)
         {
-            GameManager.instance.characterController.enabled = true;
+            GameManager.CharacterController.enabled = true;
             roundCamera.enabled = false;
             roundTransition = false;
-            GameManager.instance.uIManager.PlayerOverlay(true);
-            GameManager.instance.uIManager.RoundOverlay();
-            GameManager.instance.playerInputController.swap = false;
-            GameManager.instance.gameState = GameManager.GameState.Game;
+            GameManager.UIManager.PlayerOverlay(true);
+            GameManager.UIManager.RoundOverlay();
+            GameManager.PlayerInputController.swap = false;
+            GameManager.gameState = GameState.Game;
             NextTurn();
         }
         else
@@ -138,21 +138,21 @@ public class TurnManager : MonoBehaviour
         if (timer <= 0)
         {
             roundCamera.enabled = true;
-            GameManager.instance.characterController.enabled = false;
-            GameManager.instance.uIManager.PlayerOverlay(false);
-            GameManager.instance.uIManager.RoundOverlay(round);
+            GameManager.CharacterController.enabled = false;
+            GameManager.UIManager.PlayerOverlay(false);
+            GameManager.UIManager.RoundOverlay(round);
         }
         timer += Time.deltaTime;
 
         if (timer >= roundTransitionTime)
         {
             startTransition = false;
-            GameManager.instance.characterController.enabled = true;
+            GameManager.CharacterController.enabled = true;
             roundCamera.enabled = false;
-            GameManager.instance.uIManager.PlayerOverlay(true);
-            GameManager.instance.uIManager.RoundOverlay();
-            GameManager.instance.playerInputController.swap = false;
-            GameManager.instance.gameState = GameManager.GameState.Game;
+            GameManager.UIManager.PlayerOverlay(true);
+            GameManager.UIManager.RoundOverlay();
+            GameManager.PlayerInputController.swap = false;
+            GameManager.gameState = GameState.Game;
             NextTurn();
         }
         else
