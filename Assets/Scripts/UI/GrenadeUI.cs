@@ -19,10 +19,12 @@ public class GrenadeUI : MonoBehaviour
         if (anti)
         {
             grenadeImage.color = antiColor;
+            grenadeText.color = antiColor;
         }
         else
         {
             grenadeImage.color = Color.white;
+            grenadeText.color = Color.black;
         }
     }
 

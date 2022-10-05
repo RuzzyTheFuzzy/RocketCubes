@@ -20,7 +20,10 @@ public class CharacterController : MonoBehaviour
 
     private void Update()
     {
-        CurrentPlayer.SwapWeapons();
+        if (GameManager.gameState == GameState.Game)
+        {
+            CurrentPlayer.SwapWeapons();
+        }
     }
 
     private void LateUpdate()
@@ -31,9 +34,12 @@ public class CharacterController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        CurrentPlayer.Jump();
-        CurrentPlayer.Move();
-        CurrentPlayer.ThrowGrenade(maxThrowForce, throwAngle);
+        if (GameManager.gameState == GameState.Game)
+        {
+            CurrentPlayer.Jump();
+            CurrentPlayer.Move();
+            CurrentPlayer.ThrowGrenade(maxThrowForce, throwAngle);
+        }
     }
 
 

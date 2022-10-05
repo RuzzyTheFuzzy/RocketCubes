@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         if (playerInputController.look != Vector2.zero)
         {
             //Don't multiply mouse input by Time.deltaTime
-            float deltaTimeMultiplier = playerInputController.isCurrentDeviceMouse ? 1.0f : (Time.deltaTime * controllerMultiplier);
+            float deltaTimeMultiplier = playerInputController.isCurrentDeviceMouse ? 1.0f : (Time.unscaledDeltaTime * controllerMultiplier);
 
             int xInverse = playerInputController.isCurrentDeviceMouse ? -1 : 1;
 

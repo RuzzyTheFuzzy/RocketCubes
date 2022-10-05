@@ -61,15 +61,15 @@ public class UIManager : MonoBehaviour
         GameManager.PlayerInputController.pause = false;
     }
 
-    public void RoundOverlay(int round = -1)
+    public void OverlayText(string text = "")
     {
-        if (round == -1)
+        if (text == "")
         {
             roundOverlay.SetActive(false);
         }
         else
         {
-            roundOverlay.GetComponentInChildren<TMP_Text>().text = "Round " + round;
+            roundOverlay.GetComponentInChildren<TMP_Text>().text = text;
             roundOverlay.SetActive(true);
         }
     }

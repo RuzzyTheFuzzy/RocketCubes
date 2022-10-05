@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
+    [SerializeField] private Color[] playerColors;
     private Transform spawns;
     private Transform[] spawnPoints;
     private List<Player> players = new List<Player>();
@@ -19,12 +20,18 @@ public class PlayerManager : MonoBehaviour
 
     public void NewGame()
     {
+        List<Color> colors = new List<Color>();
+        colors.AddRange(playerColors);
+
         MaxFuel = Options.MaxFuel.value;
         NumPlayers = (int)Options.Players.value;
         maxGrenades = (int)Options.Grenades.value;
+
         WinningColors = new Color[4];
+
         spawns = LevelManager.Instance.Spawns;
         spawnPoints = spawns.GetComponentsInChildren<Transform>();
+
         for (int i = 0; i < NumPlayers; i++)
         {
             GameObject newPlayer = Instantiate(player, RandomSpawnpoint(), transform.rotation);
@@ -33,7 +40,8 @@ public class PlayerManager : MonoBehaviour
             newPlayerComponent.id = i;
             newPlayerComponent.speed = Options.Speed.value;
             Material newMaterial = newPlayer.GetComponentInChildren<MeshRenderer>().material;
-            newMaterial.color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f);
+            newMaterial.color = colors[0];
+            colors.RemoveAt(0);
             players.Add(newPlayerComponent);
         }
         activePlayer = 0;
@@ -64,18 +72,29 @@ public class PlayerManager : MonoBehaviour
     public void SwitchPlayer()
     {
         DeactivatePlayer(CurrentPlayer);
+
         if (activePlayer >= players.Count - 1)
         {
             activePlayer = 0;
-            GameManager.TurnManager.NextRound();
+
         }
         else
         {
             activePlayer++;
-            GameManager.TurnManager.NextTurn();
+
         }
+
         CurrentPlayer = players[activePlayer];
         ActivatePlayer(CurrentPlayer);
+
+        if (activePlayer == 0)
+        {
+            GameManager.TurnManager.NextRound();
+        }
+        else
+        {
+            GameManager.TurnManager.NextTurn();
+        }
     }
 
     private void ActivatePlayer(Player player)

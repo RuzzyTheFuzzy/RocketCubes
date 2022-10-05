@@ -22,7 +22,7 @@ public class TurnManager : MonoBehaviour
     private float timer;
     private bool roundTransition = false;
     private bool startTransition = false;
-    public float turnTransitionTime { get; private set; } = 2f;
+    private bool turnTransition = false;
 
     public float timeRemaining
     {
@@ -69,6 +69,18 @@ public class TurnManager : MonoBehaviour
         {
             StartTransition();
         }
+        else if (turnTransition)
+        {
+            if (GameManager.PlayerInputController.swap)
+            {
+                Time.timeScale = 1;
+                turnTransition = false;
+                GameManager.UIManager.PlayerOverlay(true);
+                GameManager.UIManager.OverlayText();
+                GameManager.gameState = GameState.Game;
+            }
+            GameManager.PlayerInputController.swap = false;
+        }
         else if (roundTransition)
         {
             RoundTransition();
@@ -88,6 +100,12 @@ public class TurnManager : MonoBehaviour
     {
         turn++;
         turnTime = 0;
+        turnTransition = true;
+
+        GameManager.UIManager.PlayerOverlay(false);
+        GameManager.UIManager.OverlayText(GameManager.PlayerManager.CurrentPlayer.name);
+        GameManager.gameState = GameState.Transition;
+        Time.timeScale = 0;
     }
 
     public void NextRound()
@@ -97,9 +115,9 @@ public class TurnManager : MonoBehaviour
         size = level.localScale;
         roundTransition = true;
         roundCamera.enabled = true;
-        GameManager.CharacterController.enabled = false;
+
         GameManager.UIManager.PlayerOverlay(false);
-        GameManager.UIManager.RoundOverlay(round);
+        GameManager.UIManager.OverlayText("Round " + round);
         GameManager.gameState = GameState.Transition;
     }
 
@@ -109,11 +127,10 @@ public class TurnManager : MonoBehaviour
 
         if (timer >= roundTransitionTime)
         {
-            GameManager.CharacterController.enabled = true;
             roundCamera.enabled = false;
             roundTransition = false;
             GameManager.UIManager.PlayerOverlay(true);
-            GameManager.UIManager.RoundOverlay();
+            GameManager.UIManager.OverlayText();
             GameManager.PlayerInputController.swap = false;
             GameManager.gameState = GameState.Game;
             NextTurn();
@@ -138,19 +155,17 @@ public class TurnManager : MonoBehaviour
         if (timer <= 0)
         {
             roundCamera.enabled = true;
-            GameManager.CharacterController.enabled = false;
             GameManager.UIManager.PlayerOverlay(false);
-            GameManager.UIManager.RoundOverlay(round);
+            GameManager.UIManager.OverlayText("Round " + round);
         }
         timer += Time.deltaTime;
 
         if (timer >= roundTransitionTime)
         {
             startTransition = false;
-            GameManager.CharacterController.enabled = true;
             roundCamera.enabled = false;
             GameManager.UIManager.PlayerOverlay(true);
-            GameManager.UIManager.RoundOverlay();
+            GameManager.UIManager.OverlayText();
             GameManager.PlayerInputController.swap = false;
             GameManager.gameState = GameState.Game;
             NextTurn();
