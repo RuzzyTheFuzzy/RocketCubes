@@ -8,6 +8,7 @@ public class Options : MonoBehaviour
     public static Options Instance { get; private set; }
     [SerializeField] private OptionsValue maxFuel;
     public static OptionsValue MaxFuel => Instance.maxFuel;
+    // Read only for the object, the value instide is still public
     [SerializeField] private OptionsValue players;
     public static OptionsValue Players => Instance.players;
     [SerializeField] private OptionsValue grenades;

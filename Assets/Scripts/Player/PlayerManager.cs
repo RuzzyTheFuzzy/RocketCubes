@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private GameObject player;
-    [SerializeField] private Color[] playerColors;
+    [SerializeField] private List<Color> playerColors;
     private Transform spawns;
     private Transform[] spawnPoints;
     private List<Player> players = new List<Player>();
@@ -20,9 +20,9 @@ public class PlayerManager : MonoBehaviour
 
     public void NewGame()
     {
-        List<Color> colors = new List<Color>();
-        colors.AddRange(playerColors);
+        List<Color> colors = new List<Color>(playerColors);
 
+        // Yoink values from options
         MaxFuel = Options.MaxFuel.value;
         NumPlayers = (int)Options.Players.value;
         maxGrenades = (int)Options.Grenades.value;
@@ -64,6 +64,7 @@ public class PlayerManager : MonoBehaviour
 
         if (GameManager.PlayerInputController.randomKill)
         {
+            // Debug command for fast games
             RandomKill();
         }
         GameManager.PlayerInputController.randomKill = false;
@@ -73,21 +74,22 @@ public class PlayerManager : MonoBehaviour
     {
         DeactivatePlayer(CurrentPlayer);
 
+        bool newRound = false;
+
         if (activePlayer >= players.Count - 1)
         {
             activePlayer = 0;
-
+            newRound = true; // If we wrapped around, new round
         }
         else
         {
             activePlayer++;
-
         }
 
         CurrentPlayer = players[activePlayer];
         ActivatePlayer(CurrentPlayer);
 
-        if (activePlayer == 0)
+        if (newRound)
         {
             GameManager.TurnManager.NextRound();
         }
@@ -100,8 +102,10 @@ public class PlayerManager : MonoBehaviour
     private void ActivatePlayer(Player player)
     {
         player.cinemachineCamera.enabled = true;
-        player.cameraFollow.transform.rotation = Quaternion.Euler(GameManager.PlayerInputController.cameraTargetPitch);
-        player.fuel = player.maxFuel;
+        player.cameraFollow.transform.rotation =
+        Quaternion.Euler(GameManager.PlayerInputController.cameraTargetPitch); // Set camera rotation for smooth transitions
+
+        player.fuel = player.MaxFuel;
         player.grenades = maxGrenades;
     }
     private void DeactivatePlayer(Player player)
@@ -124,7 +128,7 @@ public class PlayerManager : MonoBehaviour
         }
         else
         {
-            // Someone else died so who cares just update the activePlayer
+            // Someone else died so who cares, just update the activePlayer
             activePlayer = CurrentPlayer.id;
         }
     }

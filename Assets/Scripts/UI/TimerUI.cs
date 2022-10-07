@@ -10,6 +10,7 @@ public class TimerUI : MonoBehaviour
 
     public void TimerUIUpdate(float time)
     {
+        // Ceil so that the instance 0 is shown, the turn is over
         text.text = Mathf.Ceil(time).ToString();
     }
 

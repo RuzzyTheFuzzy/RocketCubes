@@ -48,14 +48,18 @@ public class WeaponManager : MonoBehaviour
         {
             projectile = antiGrenade;
         }
+
         bool thrown = false;
         Vector3 velocity = rigidBody.velocity;
         Vector3 releasePosition = ball.position;
+
         Quaternion rotation = cameraFollow.transform.rotation;
         rotation.SetLookRotation(Vector3.back);
+
         Vector3 direction = cameraFollow.transform.forward;
         direction.y += throwAngle;
         direction.Normalize();
+
         float distance = ball.lossyScale.x / 2;
         if (!Physics.Raycast(new Ray(releasePosition, direction), distance))
         {
@@ -71,7 +75,6 @@ public class WeaponManager : MonoBehaviour
 
     public void DrawProjection(Vector3 releasePosition, float throwForce, Vector3 direction)
     {
-        // Tbh, i have very little clue what this does, but it works so whatevr.
         Line.enabled = true;
         Line.positionCount = Mathf.CeilToInt(linePoints / timeBetweenPoints) + 1;
         Vector3 startPosition = releasePosition;
@@ -82,7 +85,8 @@ public class WeaponManager : MonoBehaviour
         {
             i++;
             Vector3 point = startPosition + time * startVelocity;
-            // Affect line bend with Gravity
+
+            // Bend line in accordance to gravity
             point.y = startPosition.y + startVelocity.y * time + (Physics.gravity.y / 2f * time * time);
 
             Line.SetPosition(i, point);

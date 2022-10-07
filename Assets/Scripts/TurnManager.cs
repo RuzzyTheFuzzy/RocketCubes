@@ -71,6 +71,7 @@ public class TurnManager : MonoBehaviour
         }
         else if (turnTransition)
         {
+            // Wait for the next player to be ready
             if (GameManager.PlayerInputController.swap)
             {
                 Time.timeScale = 1;

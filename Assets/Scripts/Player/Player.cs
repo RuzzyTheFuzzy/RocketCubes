@@ -7,17 +7,17 @@ using Cinemachine;
 public class Player : MonoBehaviour
 {
     public float fuel;
-    public float maxFuel { get; private set; }
+    public float MaxFuel { get; private set; }
     public int grenades;
-    public int health;
+    public int Health { get; private set; } = 3;
     public int id;
     public float speed;
     [SerializeField] private float jumpForce;
-    public Transform ball { get; private set; }
+    public Transform Ball { get; private set; }
     public CinemachineVirtualCamera cinemachineCamera;
     public GameObject cameraFollow;
     private LineRenderer line;
-    public bool anti { get; private set; }
+    public bool Anti { get; private set; }
     private float throwForce = 0;
     private float topClamp = 89f;
     private float bottomClamp = -89f;
@@ -53,13 +53,13 @@ public class Player : MonoBehaviour
         rigidBody = GetComponentInChildren<Rigidbody>();
         groundCheck = GetComponentInChildren<GroundCheck>();
         cinemachineCamera = GetComponentInChildren<CinemachineVirtualCamera>();
-        ball = rigidBody.transform;
-        maxFuel = GameManager.PlayerManager.MaxFuel;
+        Ball = rigidBody.transform;
+        MaxFuel = GameManager.PlayerManager.MaxFuel;
     }
 
     public void CameraMove()
     {
-        cameraFollow.transform.position = ball.position;
+        cameraFollow.transform.position = Ball.position;
     }
 
     public void CameraRotation(float rotationSpeed, float controllerMultiplier)
@@ -68,9 +68,9 @@ public class Player : MonoBehaviour
         if (playerInputController.look != Vector2.zero)
         {
             //Don't multiply mouse input by Time.deltaTime
-            float deltaTimeMultiplier = playerInputController.isCurrentDeviceMouse ? 1.0f : (Time.unscaledDeltaTime * controllerMultiplier);
+            float deltaTimeMultiplier = playerInputController.IsCurrentDeviceMouse ? 1.0f : (Time.unscaledDeltaTime * controllerMultiplier);
 
-            int xInverse = playerInputController.isCurrentDeviceMouse ? -1 : 1;
+            int xInverse = playerInputController.IsCurrentDeviceMouse ? -1 : 1;
 
             playerInputController.cameraTargetPitch.x += playerInputController.look.y * rotationSpeed * deltaTimeMultiplier * xInverse;
             playerInputController.cameraTargetPitch.y += playerInputController.look.x * rotationSpeed * deltaTimeMultiplier;
@@ -141,7 +141,7 @@ public class Player : MonoBehaviour
             // Release it after having held it
             else if (throwForce > 0)
             {
-                if (GameManager.WeaponManager.GrenadeToss(rigidBody, ball, cameraFollow, throwAngle, throwForce, anti))
+                if (GameManager.WeaponManager.GrenadeToss(rigidBody, Ball, cameraFollow, throwAngle, throwForce, Anti))
                 {
                     grenades--;
                 }
@@ -158,7 +158,7 @@ public class Player : MonoBehaviour
 
     public void Hit()
     {
-        if (--health <= 0)
+        if (--Health <= 0)
         {
             GameManager.PlayerManager.Death(id);
         }
@@ -166,14 +166,14 @@ public class Player : MonoBehaviour
 
     public void ChangeMaxFuel(float fuel)
     {
-        maxFuel += fuel;
+        MaxFuel += fuel;
     }
 
     public void SwapWeapons()
     {
         if (playerInputController.weaponSwap)
         {
-            anti = !anti;
+            Anti = !Anti;
         }
         playerInputController.weaponSwap = false;
     }

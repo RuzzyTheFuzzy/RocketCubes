@@ -18,18 +18,14 @@ public class CharacterController : MonoBehaviour
         }
     }
 
+    // Run player scripts from here to avoid eatch player having an update.
+    // Scripts inside player to make accesability easier
     private void Update()
     {
         if (GameManager.gameState == GameState.Game)
         {
             CurrentPlayer.SwapWeapons();
         }
-    }
-
-    private void LateUpdate()
-    {
-        CurrentPlayer.CameraMove();
-        CurrentPlayer.CameraRotation(rotationSpeed, controllerMultiplier);
     }
 
     private void FixedUpdate()
@@ -41,6 +37,14 @@ public class CharacterController : MonoBehaviour
             CurrentPlayer.ThrowGrenade(maxThrowForce, throwAngle);
         }
     }
+
+    private void LateUpdate()
+    {
+        // Always run to allow camera movement before players turn
+        CurrentPlayer.CameraMove();
+        CurrentPlayer.CameraRotation(rotationSpeed, controllerMultiplier);
+    }
+
 
 
 

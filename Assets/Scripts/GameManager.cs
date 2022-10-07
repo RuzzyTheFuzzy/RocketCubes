@@ -13,6 +13,7 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
 
+    // Everything Static for easy access
     public static GameManager Instance { get; private set; }
     public static PlayerManager PlayerManager { get; private set; }
     public static WeaponManager WeaponManager { get; private set; }
@@ -32,7 +33,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         gameState = GameState.Menu;
 
-
+        // ReadOnly, so has to be gotten through get component
         PlayerManager = GetComponentInChildren<PlayerManager>();
         TurnManager = GetComponentInChildren<TurnManager>();
         WeaponManager = GetComponentInChildren<WeaponManager>();
@@ -40,6 +41,7 @@ public class GameManager : MonoBehaviour
         PlayerInputController = GetComponentInChildren<PlayerInputController>();
         CharacterController = GetComponentInChildren<CharacterController>();
 
+        // So that the Managers dont get destroyed between scenes
         DontDestroyOnLoad(Instance.gameObject);
     }
 

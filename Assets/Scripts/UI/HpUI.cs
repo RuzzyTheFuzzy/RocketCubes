@@ -9,15 +9,9 @@ public class HpUI : MonoBehaviour
 
     public void HpUIUpdate(int HP)
     {
-
-        foreach (Image image in heartImages)
+        for (int i = 0; i < heartImages.Length; i++)
         {
-            image.enabled = false;
-        }
-
-        for (int i = 0; i < HP; i++)
-        {
-            heartImages[i].enabled = true;
+            heartImages[i].enabled = (i < HP);
         }
 
     }

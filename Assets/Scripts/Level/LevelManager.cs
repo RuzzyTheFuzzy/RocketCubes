@@ -26,7 +26,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        // Loads in when we switch into the level, so we start the game.
+        // Runs when the level and this is loaded. AKA when the game starts
         if (GameManager.Instance != null)
         {
             GameManager.Instance.StartGame();

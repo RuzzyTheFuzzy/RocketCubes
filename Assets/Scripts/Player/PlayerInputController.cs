@@ -16,7 +16,7 @@ public class PlayerInputController : MonoBehaviour
     public bool randomKill;
     public bool weaponSwap;
 
-    public bool isCurrentDeviceMouse
+    public bool IsCurrentDeviceMouse
     {
         get
         {

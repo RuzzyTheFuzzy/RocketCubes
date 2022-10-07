@@ -12,6 +12,7 @@ public class DeathPlane : MonoBehaviour
         {
             Vector3 spawnpoint = GameManager.PlayerManager.RandomSpawnpoint();
             player.Hit();
+            GameManager.UIManager.DeathMessage(player);
             Transform[] siblings = other.transform.parent.GetComponentsInChildren<Transform>();
             foreach (Transform transform in siblings)
             {

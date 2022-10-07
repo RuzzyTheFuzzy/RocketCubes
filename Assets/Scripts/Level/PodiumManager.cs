@@ -15,12 +15,15 @@ public class PodiumManager : MonoBehaviour
         colors = GameManager.PlayerManager.WinningColors;
         for (int i = 0; i < winners.Length; i++)
         {
+            // Check if colors[i] exists
+            // new Color() is the  null for Color
             if (colors[i] != new Color())
             {
                 winners[i].material.color = colors[i];
             }
             else
             {
+                // If only 2 players played, the third podium will be empty
                 Destroy(winners[i].gameObject);
             }
         }

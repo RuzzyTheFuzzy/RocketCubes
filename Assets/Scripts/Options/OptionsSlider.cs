@@ -9,6 +9,7 @@ public class OptionsSlider : MonoBehaviour
 
     [SerializeField] private TMP_Text text;
     [SerializeField] private OptionsValue optionsValue;
+    // Scriptable object to make script more adjustable
     private string standardText;
     private Slider slider;
 
